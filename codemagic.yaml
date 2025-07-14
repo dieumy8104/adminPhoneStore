@@ -1,0 +1,27 @@
+workflows:
+  flutter-app:
+    name: Build Flutter iOS and Android
+    max_build_duration: 60
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Clean project
+        script: |
+          flutter clean
+      - name: Get packages
+        script: |
+          flutter pub get
+      - name: Build iOS app
+        script: |
+          cd ios
+          pod install
+          cd ..
+          flutter build ipa --release --no-codesign
+    artifacts:
+      - build/ios/ipa/*.ipa
+    publishing:
+      email:
+        recipients:
+          - mynguyen.vo0974@gmail.com
